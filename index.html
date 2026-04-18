@@ -3,32 +3,54 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AskGogo — The AI That Remembers Your Life</title>
-<meta name="description" content="Your AI memory assistant, living inside Telegram. Remembers everything, reminds you precisely, thinks with you. Built on Claude AI — smarter than ChatGPT.">
-<meta property="og:title" content="AskGogo — The AI That Remembers Your Life">
-<meta property="og:description" content="Your personal AI memory, inside Telegram. Free to start.">
+<title>AskGogo — The AI Chief of Staff For Your Life</title>
+<meta name="description" content="Remembers everything. Reminds you precisely. Syncs your calendar. Manages your lists. All inside Telegram & WhatsApp. 7-day free trial — ₹299/month.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400&family=Geist+Mono:wght@400;500&family=Geist:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400&family=Geist+Mono:wght@400;500&family=Geist:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
+  /* DARK THEME (default) */
   :root {
-    --bg: #0a0a0a;
-    --bg-2: #131314;
-    --bg-3: #1a1a1c;
+    --bg: #07070a;
+    --bg-2: #0f0f12;
+    --bg-3: #17171c;
     --surface: rgba(255,255,255,0.03);
     --border: rgba(255,255,255,0.08);
-    --border-hover: rgba(255,255,255,0.16);
+    --border-hover: rgba(255,255,255,0.18);
     --ink: #f5f5f2;
     --ink-2: #a8a8a3;
     --ink-3: #6b6b66;
-    --accent: #b8ff4a;
-    --accent-2: #ff6b35;
-    --accent-3: #7c3aed;
+    --lime: #b8ff4a;
+    --lime-2: #86e61a;
+    --violet: #7c3aed;
+    --coral: #ff6b35;
+    --blue: #3b82f6;
     --glow: rgba(184,255,74,0.15);
     --serif: 'Fraunces', Georgia, serif;
     --sans: 'Geist', system-ui, sans-serif;
     --mono: 'Geist Mono', monospace;
+    --grain-opacity: 0.04;
   }
+  /* LIGHT THEME */
+  [data-theme="light"] {
+    --bg: #fafaf8;
+    --bg-2: #ffffff;
+    --bg-3: #f3f3ef;
+    --surface: rgba(0,0,0,0.02);
+    --border: rgba(10,10,15,0.1);
+    --border-hover: rgba(10,10,15,0.2);
+    --ink: #0a0a0f;
+    --ink-2: #3a3a4a;
+    --ink-3: #8888a0;
+    --lime: #5a8f00;
+    --lime-2: #4a7700;
+    --violet: #6d28d9;
+    --coral: #ea580c;
+    --blue: #2563eb;
+    --glow: rgba(90,143,0,0.15);
+    --grain-opacity: 0.02;
+  }
+
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   html { scroll-behavior: smooth; }
   body {
@@ -39,113 +61,138 @@
     -webkit-font-smoothing: antialiased;
     font-weight: 400;
     line-height: 1.5;
+    transition: background 0.3s, color 0.3s;
   }
+  ::selection { background: var(--lime); color: var(--bg); }
 
-  /* GRAIN */
   body::before {
     content: '';
     position: fixed; inset: 0;
     pointer-events: none;
-    z-index: 100;
-    opacity: 0.04;
+    z-index: 200;
+    opacity: var(--grain-opacity);
     background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   }
 
   /* NAV */
   nav {
-    position: fixed; top: 20px; left: 50%;
-    transform: translateX(-50%);
+    position: sticky; top: 0;
     z-index: 100;
-    background: rgba(10,10,10,0.7);
+    background: rgba(7,7,10,0.8);
     backdrop-filter: blur(30px) saturate(1.4);
     -webkit-backdrop-filter: blur(30px) saturate(1.4);
-    border: 1px solid var(--border);
-    border-radius: 100px;
-    padding: 8px 8px 8px 24px;
-    display: flex; align-items: center; gap: 32px;
-    max-width: calc(100% - 40px);
+    border-bottom: 1px solid var(--border);
+    padding: 14px 32px;
+    display: flex; align-items: center; justify-content: space-between;
+    transition: background 0.3s;
   }
+  [data-theme="light"] nav { background: rgba(250,250,248,0.85); }
+  .nav-left { display: flex; align-items: center; gap: 32px; }
   .nav-logo {
     font-family: var(--serif);
-    font-size: 20px; font-weight: 500;
+    font-size: 22px; font-weight: 500;
     color: var(--ink);
     text-decoration: none;
     letter-spacing: -0.5px;
-    display: flex; align-items: center; gap: 8px;
+    display: flex; align-items: center; gap: 10px;
   }
-  .nav-logo-mark {
-    width: 24px; height: 24px;
-    background: var(--accent);
-    border-radius: 50%;
+  .logo-mark {
+    width: 28px; height: 28px;
+    background: var(--lime);
+    border-radius: 8px;
     display: flex; align-items: center; justify-content: center;
-    font-size: 12px; font-weight: 700;
+    font-size: 13px; font-weight: 700;
     color: var(--bg);
+    font-family: var(--sans);
   }
-  .nav-links {
-    display: flex; gap: 28px; align-items: center;
-  }
+  .nav-links { display: flex; gap: 24px; align-items: center; }
   .nav-links a {
-    font-size: 13px; font-weight: 400;
-    color: var(--ink-2); text-decoration: none;
+    font-size: 13px; color: var(--ink-2); text-decoration: none;
     transition: color 0.2s;
   }
   .nav-links a:hover { color: var(--ink); }
+  .nav-right { display: flex; gap: 12px; align-items: center; }
+  .theme-toggle {
+    width: 36px; height: 36px;
+    background: transparent;
+    border: 1px solid var(--border);
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.2s;
+    color: var(--ink-2);
+    font-size: 14px;
+  }
+  .theme-toggle:hover { border-color: var(--lime); color: var(--lime); }
   .nav-cta {
-    background: var(--ink);
+    background: var(--lime);
     color: var(--bg) !important;
-    padding: 8px 18px;
+    padding: 10px 20px;
     border-radius: 100px;
     font-size: 13px;
     font-weight: 500;
+    text-decoration: none;
     transition: all 0.2s;
   }
   .nav-cta:hover {
-    background: var(--accent);
+    background: var(--lime-2);
     transform: scale(1.03);
   }
+  .nav-ghost {
+    color: var(--ink-2);
+    font-size: 13px;
+    text-decoration: none;
+    padding: 10px 16px;
+  }
+  .nav-ghost:hover { color: var(--ink); }
 
   /* HERO */
   .hero {
-    min-height: 100vh;
+    min-height: 90vh;
     display: flex; flex-direction: column;
     align-items: center; justify-content: center;
     text-align: center;
-    padding: 140px 24px 80px;
+    padding: 80px 24px 40px;
     position: relative;
     overflow: hidden;
   }
   .hero-bg {
     position: absolute; inset: 0; z-index: 0;
     background:
-      radial-gradient(ellipse 80% 60% at 50% 0%, rgba(184,255,74,0.06) 0%, transparent 60%),
-      radial-gradient(ellipse 60% 40% at 20% 100%, rgba(124,58,237,0.08) 0%, transparent 70%),
-      radial-gradient(ellipse 60% 40% at 80% 100%, rgba(255,107,53,0.05) 0%, transparent 70%);
+      radial-gradient(ellipse 90% 60% at 50% 0%, rgba(184,255,74,0.08) 0%, transparent 55%),
+      radial-gradient(ellipse 60% 40% at 15% 90%, rgba(124,58,237,0.1) 0%, transparent 65%),
+      radial-gradient(ellipse 60% 40% at 85% 90%, rgba(255,107,53,0.08) 0%, transparent 65%);
   }
-  .grid-pattern {
+  [data-theme="light"] .hero-bg {
+    background:
+      radial-gradient(ellipse 90% 60% at 50% 0%, rgba(90,143,0,0.06) 0%, transparent 55%),
+      radial-gradient(ellipse 60% 40% at 15% 90%, rgba(109,40,217,0.05) 0%, transparent 65%),
+      radial-gradient(ellipse 60% 40% at 85% 90%, rgba(234,88,12,0.04) 0%, transparent 65%);
+  }
+  .grid-bg {
     position: absolute; inset: 0; z-index: 0;
     background-image:
       linear-gradient(var(--border) 1px, transparent 1px),
       linear-gradient(90deg, var(--border) 1px, transparent 1px);
-    background-size: 60px 60px;
-    mask-image: radial-gradient(ellipse 70% 60% at 50% 50%, black 20%, transparent 80%);
-    -webkit-mask-image: radial-gradient(ellipse 70% 60% at 50% 50%, black 20%, transparent 80%);
-    opacity: 0.4;
+    background-size: 72px 72px;
+    mask-image: radial-gradient(ellipse 75% 65% at 50% 50%, black 20%, transparent 85%);
+    -webkit-mask-image: radial-gradient(ellipse 75% 65% at 50% 50%, black 20%, transparent 85%);
+    opacity: 0.5;
   }
-
   .hero-badge {
-    display: inline-flex; align-items: center; gap: 8px;
-    background: var(--surface);
-    border: 1px solid var(--border);
-    color: var(--ink-2);
+    display: inline-flex; align-items: center; gap: 10px;
+    background: rgba(184,255,74,0.08);
+    border: 1px solid rgba(184,255,74,0.25);
+    color: var(--lime);
     font-family: var(--mono);
     font-size: 11px; font-weight: 500;
-    letter-spacing: 0.02em;
+    letter-spacing: 0.05em;
     padding: 6px 14px; border-radius: 100px;
-    margin-bottom: 40px; position: relative; z-index: 1;
+    margin-bottom: 32px; position: relative; z-index: 1;
   }
-  .hero-badge .live-dot {
+  .live-dot {
     width: 6px; height: 6px;
-    background: var(--accent); border-radius: 50%;
+    background: var(--lime); border-radius: 50%;
     animation: pulse 2s ease-in-out infinite;
     box-shadow: 0 0 0 4px rgba(184,255,74,0.2);
   }
@@ -153,75 +200,69 @@
     0%, 100% { opacity: 1; transform: scale(1); }
     50% { opacity: 0.5; transform: scale(0.8); }
   }
-
   .hero h1 {
     font-family: var(--serif);
-    font-size: clamp(48px, 9vw, 120px);
+    font-size: clamp(44px, 8vw, 104px);
     font-weight: 300;
     line-height: 0.92;
     letter-spacing: -0.04em;
     color: var(--ink);
     max-width: 1100px;
     position: relative; z-index: 1;
-    margin-bottom: 36px;
+    margin-bottom: 28px;
   }
-  .hero h1 .accent-word {
+  .hero h1 .accent {
     font-style: italic;
     font-weight: 400;
-    background: linear-gradient(135deg, var(--accent) 0%, #86e61a 100%);
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
     position: relative;
     display: inline-block;
+    color: var(--lime);
   }
-  .hero h1 .accent-word::after {
+  .hero h1 .accent::after {
     content: '';
     position: absolute;
-    bottom: -2px; left: 0; right: 0;
-    height: 40%;
-    background: rgba(184,255,74,0.08);
+    bottom: 8px; left: -4px; right: -4px;
+    height: 20%;
+    background: rgba(184,255,74,0.15);
     z-index: -1;
-    transform: skewX(-5deg);
+    transform: skewX(-4deg);
   }
-
+  [data-theme="light"] .hero h1 .accent::after { background: rgba(90,143,0,0.15); }
   .hero-sub {
-    font-size: clamp(16px, 2vw, 20px);
+    font-size: clamp(16px, 2vw, 22px);
     color: var(--ink-2);
     line-height: 1.5;
-    max-width: 620px;
-    margin-bottom: 48px;
-    font-weight: 400;
+    max-width: 680px;
+    margin-bottom: 40px;
     position: relative; z-index: 1;
   }
-
+  .hero-sub strong { color: var(--ink); font-weight: 500; }
   .hero-actions {
     display: flex; gap: 12px; align-items: center;
     flex-wrap: wrap; justify-content: center;
     position: relative; z-index: 1;
-    margin-bottom: 80px;
+    margin-bottom: 28px;
   }
   .btn-primary {
     display: inline-flex; align-items: center; gap: 10px;
-    background: var(--accent);
+    background: var(--lime);
     color: var(--bg);
     padding: 16px 28px;
     border-radius: 100px;
     font-size: 15px; font-weight: 500;
     text-decoration: none;
     transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-    position: relative;
     box-shadow: 0 8px 32px var(--glow);
+    border: none;
+    cursor: pointer;
+    font-family: var(--sans);
   }
   .btn-primary:hover {
     transform: translateY(-2px);
-    box-shadow: 0 16px 48px rgba(184,255,74,0.3);
+    box-shadow: 0 16px 48px rgba(184,255,74,0.35);
   }
-  .btn-primary .arrow {
-    transition: transform 0.2s;
-  }
+  .btn-primary .arrow { transition: transform 0.2s; }
   .btn-primary:hover .arrow { transform: translateX(4px); }
-
   .btn-secondary {
     display: inline-flex; align-items: center; gap: 8px;
     color: var(--ink);
@@ -237,44 +278,67 @@
     border-color: var(--border-hover);
     background: var(--surface);
   }
+  .trial-note {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--ink-3);
+    position: relative; z-index: 1;
+    margin-bottom: 56px;
+  }
+  .trial-note strong { color: var(--ink-2); font-weight: 500; }
 
-  .trust-strip {
-    display: flex; gap: 32px; align-items: center;
+  .channels-strip {
+    display: flex; align-items: center; gap: 32px;
     flex-wrap: wrap; justify-content: center;
     position: relative; z-index: 1;
-    padding-top: 32px;
+    padding: 32px 24px;
     border-top: 1px dashed var(--border);
-    max-width: 720px;
+    border-bottom: 1px dashed var(--border);
+    max-width: 900px;
     margin: 0 auto;
   }
-  .trust-strip-label {
+  .channels-label {
     font-family: var(--mono); font-size: 11px;
-    color: var(--ink-3); letter-spacing: 0.1em;
+    color: var(--ink-3); letter-spacing: 0.15em;
     text-transform: uppercase;
   }
-  .trust-item {
+  .channels-items { display: flex; gap: 24px; flex-wrap: wrap; justify-content: center; }
+  .channel-item {
+    display: flex; align-items: center; gap: 8px;
     font-size: 13px;
     color: var(--ink-2);
-    display: flex; align-items: center; gap: 6px;
   }
-  .trust-item strong { color: var(--ink); font-weight: 500; }
+  .channel-item strong { color: var(--ink); font-weight: 500; }
+  .channel-badge {
+    font-size: 9px;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-family: var(--mono);
+    font-weight: 500;
+    letter-spacing: 0.06em;
+  }
+  .badge-live { background: rgba(184,255,74,0.15); color: var(--lime); }
+  .badge-soon { background: var(--surface); color: var(--ink-3); }
 
-  /* INTERACTIVE DEMO */
+  /* DEMO SECTION */
   .demo-section {
     padding: 100px 24px;
     background: linear-gradient(180deg, transparent 0%, var(--bg-2) 50%, transparent 100%);
     position: relative;
   }
   .demo-container {
-    max-width: 680px; margin: 0 auto;
+    max-width: 700px; margin: 0 auto;
     background: var(--bg-3);
     border: 1px solid var(--border);
-    border-radius: 32px;
+    border-radius: 28px;
     overflow: hidden;
     box-shadow:
       0 0 0 1px rgba(255,255,255,0.02),
-      0 32px 80px rgba(0,0,0,0.6),
-      0 0 120px rgba(184,255,74,0.04);
+      0 40px 80px rgba(0,0,0,0.4),
+      0 0 120px rgba(184,255,74,0.05);
+  }
+  [data-theme="light"] .demo-container {
+    box-shadow: 0 40px 80px rgba(0,0,0,0.08), 0 0 120px rgba(90,143,0,0.06);
   }
   .demo-header {
     padding: 16px 20px;
@@ -282,11 +346,13 @@
     display: flex; align-items: center; gap: 12px;
     background: rgba(0,0,0,0.3);
   }
+  [data-theme="light"] .demo-header { background: var(--surface); }
   .demo-dots { display: flex; gap: 6px; }
   .demo-dot {
     width: 10px; height: 10px; border-radius: 50%;
     background: rgba(255,255,255,0.2);
   }
+  [data-theme="light"] .demo-dot { background: rgba(0,0,0,0.15); }
   .demo-title {
     flex: 1; text-align: center;
     font-family: var(--mono); font-size: 11px;
@@ -294,13 +360,13 @@
   }
   .demo-avatar {
     width: 32px; height: 32px; border-radius: 50%;
-    background: linear-gradient(135deg, var(--accent-3), var(--accent));
+    background: linear-gradient(135deg, var(--violet), var(--lime));
     display: flex; align-items: center; justify-content: center;
     font-size: 14px;
   }
   .demo-body {
     padding: 24px 20px;
-    min-height: 420px;
+    min-height: 440px;
     display: flex; flex-direction: column; gap: 12px;
   }
   .msg {
@@ -317,19 +383,20 @@
     to { opacity: 1; transform: translateY(0) scale(1); }
   }
   .msg-user {
-    background: var(--accent);
+    background: var(--lime);
     color: var(--bg);
     align-self: flex-end;
     border-bottom-right-radius: 6px;
     font-weight: 500;
   }
   .msg-bot {
-    background: rgba(255,255,255,0.06);
+    background: var(--surface);
     color: var(--ink);
     align-self: flex-start;
     border-bottom-left-radius: 6px;
+    border: 1px solid var(--border);
   }
-  .msg-bot strong { color: var(--accent); font-weight: 500; }
+  .msg-bot strong { color: var(--lime); font-weight: 500; }
   .msg-time {
     font-family: var(--mono); font-size: 10px;
     opacity: 0.5; margin-top: 4px;
@@ -337,7 +404,8 @@
   }
   .typing {
     align-self: flex-start;
-    background: rgba(255,255,255,0.06);
+    background: var(--surface);
+    border: 1px solid var(--border);
     padding: 14px 18px;
     border-radius: 20px;
     border-bottom-left-radius: 6px;
@@ -356,13 +424,13 @@
     0%, 60%, 100% { transform: translateY(0); opacity: 0.3; }
     30% { transform: translateY(-6px); opacity: 1; }
   }
-
   .demo-controls {
     padding: 16px 20px;
     border-top: 1px solid var(--border);
     display: flex; gap: 8px; flex-wrap: wrap;
     background: rgba(0,0,0,0.2);
   }
+  [data-theme="light"] .demo-controls { background: var(--surface); }
   .demo-chip {
     font-size: 12px;
     padding: 8px 14px;
@@ -371,19 +439,35 @@
     background: transparent;
     color: var(--ink-2);
     cursor: pointer;
-    transition: all 0.2s;
+    transition: all 0.4s;
     font-family: var(--sans);
+    display: flex; align-items: center; gap: 6px;
+    position: relative;
+    overflow: hidden;
   }
   .demo-chip:hover {
-    border-color: var(--accent);
-    color: var(--accent);
-    background: rgba(184,255,74,0.05);
+    border-color: var(--lime);
+    color: var(--lime);
   }
   .demo-chip.active {
-    background: var(--accent);
+    background: var(--lime);
     color: var(--bg);
-    border-color: var(--accent);
+    border-color: var(--lime);
     font-weight: 500;
+  }
+  /* Progress bar on active chip */
+  .demo-chip.active::before {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0;
+    height: 2px;
+    background: rgba(7,7,10,0.25);
+    width: 100%;
+    animation: progressBar 8s linear;
+  }
+  @keyframes progressBar {
+    from { width: 0%; }
+    to { width: 100%; }
   }
 
   /* SECTIONS */
@@ -393,36 +477,35 @@
     font-family: var(--mono);
     font-size: 11px; font-weight: 500;
     letter-spacing: 0.15em; text-transform: uppercase;
-    color: var(--accent);
+    color: var(--lime);
     margin-bottom: 20px;
     display: inline-flex; align-items: center; gap: 10px;
   }
   .section-label::before {
-    content: '';
-    width: 20px; height: 1px;
-    background: var(--accent);
+    content: ''; width: 20px; height: 1px;
+    background: var(--lime);
   }
   .section-title {
     font-family: var(--serif);
-    font-size: clamp(36px, 5vw, 72px);
+    font-size: clamp(36px, 5vw, 76px);
     font-weight: 300;
     line-height: 0.95;
     letter-spacing: -0.03em;
     color: var(--ink);
-    max-width: 860px;
+    max-width: 900px;
     margin-bottom: 24px;
   }
-  .section-title em { font-style: italic; color: var(--accent); font-weight: 400; }
+  .section-title em { font-style: italic; color: var(--lime); font-weight: 400; }
   .section-sub {
     font-size: 18px; color: var(--ink-2);
     line-height: 1.6;
-    max-width: 580px; margin-bottom: 72px;
+    max-width: 620px; margin-bottom: 64px;
   }
 
-  /* BENTO GRID */
-  .bento-grid {
+  /* BENTO */
+  .bento {
     display: grid;
-    grid-template-columns: repeat(6, 1fr);
+    grid-template-columns: repeat(12, 1fr);
     gap: 16px;
   }
   .bento-card {
@@ -432,23 +515,31 @@
     padding: 32px;
     position: relative;
     overflow: hidden;
-    transition: border-color 0.3s, transform 0.3s;
+    transition: border-color 0.3s;
     min-height: 280px;
     display: flex; flex-direction: column;
   }
   .bento-card:hover { border-color: var(--border-hover); }
-  .bento-card.large { grid-column: span 4; }
-  .bento-card.medium { grid-column: span 3; }
-  .bento-card.small { grid-column: span 2; }
-  .bento-card.full { grid-column: span 6; min-height: 320px; }
-
+  .bento-card.w6 { grid-column: span 6; }
+  .bento-card.w4 { grid-column: span 4; }
+  .bento-card.w3 { grid-column: span 3; }
+  .bento-card.w8 { grid-column: span 8; }
+  .bento-card.w12 { grid-column: span 12; }
   .bento-eyebrow {
     font-family: var(--mono);
     font-size: 11px;
     color: var(--ink-3);
-    letter-spacing: 0.08em;
+    letter-spacing: 0.1em;
     text-transform: uppercase;
-    margin-bottom: 16px;
+    margin-bottom: 14px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .bento-eyebrow-icon {
+    width: 20px; height: 20px;
+    background: var(--surface);
+    border-radius: 6px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px;
   }
   .bento-title {
     font-family: var(--serif);
@@ -459,109 +550,135 @@
     color: var(--ink);
     margin-bottom: 12px;
   }
-  .bento-title em { font-style: italic; color: var(--accent); }
+  .bento-title em { font-style: italic; color: var(--lime); }
   .bento-text {
     font-size: 14px;
     color: var(--ink-2);
     line-height: 1.6;
-    flex: 1;
+    margin-bottom: 20px;
   }
-  .bento-visual {
-    margin-top: auto;
-    padding-top: 24px;
-  }
+  .bento-visual { margin-top: auto; }
 
-  /* MEMORY VISUAL */
-  .memory-chip {
+  .mem-list { display: flex; flex-direction: column; gap: 6px; }
+  .mem-chip {
     display: flex; align-items: center; gap: 10px;
-    background: rgba(255,255,255,0.04);
+    background: var(--surface);
     border: 1px solid var(--border);
-    border-radius: 12px;
+    border-radius: 10px;
     padding: 10px 14px;
-    margin-bottom: 8px;
-    font-size: 13px;
+    font-size: 12.5px;
     color: var(--ink-2);
-    animation: slideRight 0.5s forwards;
-    opacity: 0;
   }
-  @keyframes slideRight {
-    from { opacity: 0; transform: translateX(-12px); }
-    to { opacity: 1; transform: translateX(0); }
-  }
-  .memory-tag {
+  .mem-tag {
     font-family: var(--mono);
-    font-size: 10px;
-    padding: 2px 8px;
+    font-size: 9px;
+    padding: 2px 7px;
     border-radius: 100px;
-    background: rgba(184,255,74,0.1);
-    color: var(--accent);
     text-transform: uppercase;
     letter-spacing: 0.06em;
+    font-weight: 500;
   }
+  .tag-lime { background: rgba(184,255,74,0.12); color: var(--lime); }
+  .tag-violet { background: rgba(124,58,237,0.15); color: #c4b5fd; }
+  .tag-coral { background: rgba(255,107,53,0.15); color: #fed7aa; }
+  .tag-blue { background: rgba(59,130,246,0.15); color: #93c5fd; }
+  [data-theme="light"] .tag-violet { color: #6d28d9; background: rgba(109,40,217,0.12); }
+  [data-theme="light"] .tag-coral { color: #c2410c; background: rgba(234,88,12,0.12); }
+  [data-theme="light"] .tag-blue { color: #1d4ed8; background: rgba(37,99,235,0.12); }
 
-  /* REMINDER CARD */
-  .reminder-visual {
-    background: rgba(0,0,0,0.3);
+  .rem-box {
+    background: var(--surface);
     border: 1px solid var(--border);
-    border-radius: 16px;
-    padding: 16px;
+    border-radius: 14px;
+    padding: 14px;
   }
-  .reminder-row {
+  .rem-row {
     display: flex; align-items: center; gap: 12px;
     padding: 10px 0;
     border-bottom: 1px solid var(--border);
     font-size: 13px;
   }
-  .reminder-row:last-child { border-bottom: none; }
-  .reminder-emoji { font-size: 20px; }
-  .reminder-info { flex: 1; }
-  .reminder-msg { color: var(--ink); font-weight: 500; font-size: 13px; }
-  .reminder-meta {
-    color: var(--ink-3);
-    font-family: var(--mono);
-    font-size: 10px; margin-top: 2px;
-  }
-  .reminder-badge {
-    font-family: var(--mono);
-    font-size: 10px;
-    padding: 3px 8px;
-    border-radius: 100px;
-    background: rgba(184,255,74,0.1);
-    color: var(--accent);
+  .rem-row:last-child { border-bottom: none; }
+  .rem-emoji { font-size: 18px; }
+  .rem-info { flex: 1; }
+  .rem-msg { color: var(--ink); font-weight: 500; font-size: 13px; }
+  .rem-meta { color: var(--ink-3); font-family: var(--mono); font-size: 10px; margin-top: 2px; }
+  .rem-badge {
+    font-family: var(--mono); font-size: 10px;
+    padding: 3px 8px; border-radius: 100px;
+    background: rgba(184,255,74,0.12); color: var(--lime);
   }
 
-  /* VOICE VISUAL */
-  .voice-visual {
-    display: flex; align-items: center; gap: 16px;
-    background: rgba(0,0,0,0.3);
+  .cal-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 14px;
+  }
+  .cal-day {
+    font-family: var(--mono); font-size: 10px;
+    color: var(--ink-3); text-transform: uppercase;
+    letter-spacing: 0.08em; margin-bottom: 8px;
+  }
+  .cal-event {
+    display: flex; gap: 10px; align-items: center;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .cal-event:last-child { border-bottom: none; }
+  .cal-time { font-family: var(--mono); font-size: 10px; color: var(--ink-3); min-width: 48px; }
+  .cal-dot { width: 8px; height: 8px; border-radius: 50%; }
+  .cal-title { font-size: 13px; color: var(--ink); flex: 1; }
+
+  .list-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 14px;
+  }
+  .list-title {
+    font-family: var(--mono); font-size: 11px;
+    color: var(--ink-3); text-transform: uppercase;
+    letter-spacing: 0.08em; margin-bottom: 10px;
+    display: flex; justify-content: space-between;
+  }
+  .list-count { color: var(--lime); }
+  .list-item {
+    display: flex; align-items: center; gap: 10px;
+    padding: 6px 0; font-size: 13px; color: var(--ink-2);
+  }
+  .list-check {
+    width: 16px; height: 16px;
+    border: 1.5px solid var(--border);
+    border-radius: 4px; flex-shrink: 0;
+  }
+  .list-check.checked {
+    background: var(--lime); border-color: var(--lime);
+    display: flex; align-items: center; justify-content: center;
+    color: var(--bg); font-size: 10px; font-weight: 600;
+  }
+  .list-item.done { text-decoration: line-through; color: var(--ink-3); }
+
+  .voice-bar {
+    display: flex; align-items: center; gap: 14px;
+    background: var(--surface);
     border: 1px solid var(--border);
     border-radius: 100px;
-    padding: 12px 20px;
+    padding: 10px 18px;
   }
   .voice-mic {
-    width: 36px; height: 36px;
-    background: var(--accent);
-    color: var(--bg);
+    width: 34px; height: 34px;
+    background: var(--lime); color: var(--bg);
     border-radius: 50%;
     display: flex; align-items: center; justify-content: center;
-    font-size: 16px;
+    font-size: 14px;
   }
-  .voice-wave {
-    flex: 1;
-    display: flex; align-items: center; gap: 3px;
-    height: 24px;
-  }
+  .voice-wave { flex: 1; display: flex; align-items: center; gap: 3px; height: 22px; }
   .wave-bar {
-    flex: 1;
-    background: var(--accent);
-    border-radius: 2px;
-    animation: wave 1.5s ease-in-out infinite;
-    opacity: 0.6;
+    flex: 1; background: var(--lime); border-radius: 2px;
+    animation: wave 1.5s ease-in-out infinite; opacity: 0.6;
   }
-  @keyframes wave {
-    0%, 100% { height: 20%; }
-    50% { height: 80%; }
-  }
+  @keyframes wave { 0%,100% { height: 20%; } 50% { height: 80%; } }
   .wave-bar:nth-child(1) { animation-delay: 0s; }
   .wave-bar:nth-child(2) { animation-delay: 0.1s; }
   .wave-bar:nth-child(3) { animation-delay: 0.2s; }
@@ -570,11 +687,101 @@
   .wave-bar:nth-child(6) { animation-delay: 0.3s; }
   .wave-bar:nth-child(7) { animation-delay: 0.2s; }
   .wave-bar:nth-child(8) { animation-delay: 0.1s; }
-  .voice-time {
-    font-family: var(--mono);
-    font-size: 11px;
-    color: var(--ink-2);
+  .voice-time { font-family: var(--mono); font-size: 11px; color: var(--ink-2); }
+
+  .brief-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 16px;
   }
+  .brief-greet {
+    font-family: var(--serif); font-size: 18px; color: var(--ink);
+    margin-bottom: 8px; font-style: italic;
+  }
+  .brief-item {
+    display: flex; gap: 10px; align-items: center;
+    padding: 6px 0; font-size: 13px; color: var(--ink-2);
+  }
+  .brief-dot { width: 4px; height: 4px; border-radius: 50%; background: var(--lime); }
+
+  /* Breathe visual */
+  .breathe-viz {
+    display: flex; flex-direction: column; align-items: center; gap: 10px;
+  }
+  .breathe-circle {
+    width: 80px; height: 80px;
+    border: 2px solid var(--lime);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--mono); font-size: 10px;
+    color: var(--lime);
+    animation: breathe 8s ease-in-out infinite;
+  }
+  @keyframes breathe {
+    0%, 100% { transform: scale(0.7); }
+    25% { transform: scale(1); }
+    50% { transform: scale(1); }
+    75% { transform: scale(0.7); }
+  }
+  .breathe-label { font-family: var(--mono); font-size: 10px; color: var(--ink-3); text-transform: uppercase; letter-spacing: 0.08em; }
+
+  /* USE CASES */
+  .usecase-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+  }
+  .usecase-card {
+    background: var(--bg-2);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 28px 24px;
+    transition: all 0.2s;
+    cursor: pointer;
+  }
+  .usecase-card:hover {
+    border-color: var(--lime);
+    transform: translateY(-4px);
+  }
+  .usecase-icon {
+    width: 44px; height: 44px;
+    background: rgba(184,255,74,0.1);
+    border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px;
+    margin-bottom: 20px;
+  }
+  .usecase-name {
+    font-family: var(--serif); font-size: 22px; font-weight: 400;
+    color: var(--ink); margin-bottom: 8px;
+  }
+  .usecase-desc { font-size: 13px; color: var(--ink-2); line-height: 1.5; }
+
+  /* INTEGRATIONS */
+  .int-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+  }
+  .int-card {
+    background: var(--bg-2);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 20px 16px;
+    display: flex; flex-direction: column; align-items: center;
+    gap: 12px; text-align: center;
+    transition: border-color 0.2s;
+  }
+  .int-card:hover { border-color: var(--border-hover); }
+  .int-icon { font-size: 32px; }
+  .int-name { font-size: 13px; color: var(--ink); font-weight: 500; }
+  .int-status {
+    font-family: var(--mono); font-size: 9px;
+    padding: 2px 8px; border-radius: 100px; letter-spacing: 0.06em;
+  }
+  .int-live { background: rgba(184,255,74,0.12); color: var(--lime); }
+  .int-soon { background: var(--surface); color: var(--ink-3); }
 
   /* COMPARE */
   .compare-section { background: var(--bg-2); }
@@ -583,161 +790,281 @@
     border-radius: 24px;
     overflow: hidden;
     background: var(--bg);
+    overflow-x: auto;
   }
-  .compare-table {
-    width: 100%;
-    border-collapse: collapse;
-  }
+  .compare-table { width: 100%; border-collapse: collapse; min-width: 600px; }
   .compare-table th {
-    padding: 24px;
-    text-align: left;
+    padding: 24px; text-align: left;
     font-family: var(--mono);
-    font-size: 11px;
-    font-weight: 500;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
+    font-size: 11px; font-weight: 500;
+    letter-spacing: 0.1em; text-transform: uppercase;
     color: var(--ink-3);
     border-bottom: 1px solid var(--border);
-    background: rgba(0,0,0,0.3);
+    background: var(--surface);
   }
   .compare-table th.ours {
     background: rgba(184,255,74,0.08);
-    color: var(--accent);
+    color: var(--lime);
   }
   .compare-table td {
-    padding: 20px 24px;
+    padding: 18px 24px;
     border-bottom: 1px solid var(--border);
     font-size: 14px;
     color: var(--ink-2);
     vertical-align: middle;
   }
   .compare-table tr:last-child td { border-bottom: none; }
-  .compare-table tr:hover td { background: rgba(255,255,255,0.02); }
+  .compare-table tr:hover td { background: var(--surface); }
   .compare-table .feature { color: var(--ink); font-weight: 500; }
-  .compare-table .ours { color: var(--accent) !important; font-weight: 500; background: rgba(184,255,74,0.03); }
+  .compare-table .ours { color: var(--lime) !important; font-weight: 500; background: rgba(184,255,74,0.03); }
   .compare-table .losing { color: var(--ink-3) !important; }
 
-  /* PRICING */
+  /* PRICING — Memorae-inspired */
   .pricing-section { background: var(--bg); }
-  .pricing-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 16px;
-    align-items: start;
-  }
-  .pricing-card {
+  .pricing-toggle {
+    display: inline-flex;
     background: var(--bg-2);
     border: 1px solid var(--border);
-    border-radius: 24px;
-    padding: 36px 32px;
-    transition: border-color 0.2s, transform 0.2s;
-    position: relative;
-  }
-  .pricing-card:hover {
-    border-color: var(--border-hover);
-    transform: translateY(-4px);
-  }
-  .pricing-card.featured {
-    background: linear-gradient(180deg, rgba(184,255,74,0.08) 0%, var(--bg-2) 100%);
-    border-color: var(--accent);
-  }
-  .pricing-card.featured::before {
-    content: 'Most popular';
-    position: absolute;
-    top: -12px; left: 32px;
-    background: var(--accent);
-    color: var(--bg);
-    font-family: var(--mono);
-    font-size: 10px;
-    font-weight: 600;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    padding: 4px 12px;
     border-radius: 100px;
+    padding: 4px;
+    margin-bottom: 40px;
   }
-  .plan-name {
+  .toggle-opt {
+    padding: 8px 20px;
+    border-radius: 100px;
+    font-size: 13px;
+    color: var(--ink-2);
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: var(--sans);
+    display: flex; align-items: center; gap: 8px;
+  }
+  .toggle-opt.active {
+    background: var(--lime);
+    color: var(--bg);
+    font-weight: 500;
+  }
+  .save-badge {
+    font-family: var(--mono); font-size: 9px;
+    padding: 2px 6px; border-radius: 4px;
+    background: rgba(184,255,74,0.2); color: var(--lime);
+  }
+  .toggle-opt.active .save-badge {
+    background: rgba(7,7,10,0.15); color: var(--bg);
+  }
+
+  .hero-plan-card {
+    background: linear-gradient(135deg, #7c3aed 0%, #ec4899 50%, #3b82f6 100%);
+    border-radius: 24px;
+    padding: 32px;
+    margin-bottom: 24px;
+    color: #fff;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero-plan-card::before {
+    content: '';
+    position: absolute;
+    top: 20%; right: -20%;
+    width: 280px; height: 280px;
+    background: radial-gradient(circle, rgba(255,255,255,0.3) 0%, transparent 60%);
+    border-radius: 50%;
+  }
+  .hero-plan-label {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.7);
+    margin-bottom: 16px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .hero-plan-top {
+    display: flex; justify-content: space-between; align-items: flex-start;
+    position: relative; z-index: 1;
+  }
+  .hero-plan-name {
     font-family: var(--serif);
-    font-size: 24px;
+    font-size: 48px;
     font-weight: 400;
-    color: var(--ink);
+    color: #fff;
+    line-height: 1;
     margin-bottom: 8px;
   }
-  .plan-price {
-    font-family: var(--serif);
-    font-size: 56px;
-    font-weight: 300;
-    color: var(--ink);
-    line-height: 1;
-    margin-bottom: 6px;
-    display: flex; align-items: baseline; gap: 4px;
+  .hero-trial-badge {
+    display: inline-block;
+    background: #86e61a;
+    color: #0a0a0f;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: 4px;
+    margin-bottom: 12px;
+    letter-spacing: 0.04em;
+    font-family: var(--mono);
   }
-  .plan-price sup {
-    font-size: 22px;
-    font-weight: 400;
-    align-self: flex-start;
-    margin-top: 14px;
-    color: var(--ink-2);
-  }
-  .plan-price sub {
-    font-family: var(--sans);
+  .hero-plan-sub {
+    color: rgba(255,255,255,0.85);
     font-size: 14px;
-    font-weight: 400;
-    color: var(--ink-3);
   }
-  .plan-desc {
+  .hero-plan-avatar {
+    width: 80px; height: 80px;
+    background: radial-gradient(circle at 30% 30%, #fff 0%, #b8ff4a 40%, #7c3aed 100%);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 36px;
+    position: relative; z-index: 1;
+  }
+  .compare-plans {
     font-size: 13px;
-    color: var(--ink-3);
-    margin-bottom: 28px;
+    color: rgba(255,255,255,0.8);
+    text-decoration: underline;
+    margin-top: 16px;
+    display: inline-block;
+    position: relative; z-index: 1;
   }
-  .plan-divider {
-    height: 1px;
-    background: var(--border);
-    margin: 24px 0 20px;
+
+  .plan-cards-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-bottom: 20px;
   }
-  .plan-features {
-    list-style: none;
-    display: flex; flex-direction: column; gap: 12px;
-    margin-bottom: 28px;
+  .plan-mini-card {
+    background: var(--bg-2);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 20px;
+    cursor: pointer;
+    transition: all 0.2s;
+    position: relative;
   }
-  .plan-feature {
-    display: flex; gap: 10px; align-items: center;
-    font-size: 13px;
-    color: var(--ink-2);
+  .plan-mini-card:hover { border-color: var(--border-hover); }
+  .plan-mini-card.selected {
+    border-color: var(--lime);
+    background: rgba(184,255,74,0.03);
   }
-  .plan-check {
-    width: 16px; height: 16px;
-    background: rgba(184,255,74,0.1);
+  .plan-mini-card.selected::after {
+    content: '✓';
+    position: absolute;
+    top: 12px; right: 12px;
+    width: 18px; height: 18px;
+    background: var(--lime);
+    color: var(--bg);
     border-radius: 50%;
     display: flex; align-items: center; justify-content: center;
     font-size: 10px;
-    color: var(--accent);
+    font-weight: 600;
+  }
+  .plan-mini-popular {
+    background: linear-gradient(135deg, #b8ff4a 0%, #86e61a 100%);
+    color: #0a0a0f;
+  }
+  .plan-mini-popular .plan-mini-name, .plan-mini-popular .plan-mini-price,
+  .plan-mini-popular .plan-mini-period { color: #0a0a0f !important; }
+  .plan-mini-popular-tag {
+    background: #0a0a0f;
+    color: #b8ff4a;
+    font-family: var(--mono);
+    font-size: 9px;
+    font-weight: 600;
+    padding: 3px 8px;
+    border-radius: 4px;
+    margin-top: 8px;
+    display: inline-block;
+    letter-spacing: 0.06em;
+  }
+  .plan-mini-name {
+    font-family: var(--serif);
+    font-size: 18px;
+    color: var(--ink);
+    margin-bottom: 8px;
+  }
+  .plan-mini-price {
+    font-family: var(--serif);
+    font-size: 28px;
+    color: var(--ink);
+    font-weight: 400;
+    line-height: 1;
+  }
+  .plan-mini-price .cut {
+    font-size: 14px;
+    color: var(--ink-3);
+    text-decoration: line-through;
+    margin-left: 6px;
+  }
+  .plan-mini-period {
+    font-size: 11px;
+    color: var(--ink-3);
+    margin-top: 2px;
+  }
+
+  .guarantee-box {
+    background: var(--surface);
+    border: 1px solid rgba(184,255,74,0.3);
+    border-radius: 16px;
+    padding: 16px 20px;
+    display: flex; align-items: flex-start; gap: 12px;
+    margin-bottom: 32px;
+    font-size: 13px;
+    color: var(--ink-2);
+    line-height: 1.5;
+  }
+  .guarantee-icon {
+    width: 28px; height: 28px;
+    background: rgba(184,255,74,0.15);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px;
+    color: var(--lime);
     flex-shrink: 0;
   }
-  .btn-plan {
-    display: block; text-align: center;
-    padding: 14px;
-    border-radius: 100px;
-    font-size: 14px;
-    font-weight: 500;
-    text-decoration: none;
-    transition: all 0.2s;
-    font-family: var(--sans);
-  }
-  .btn-plan-ghost {
-    border: 1px solid var(--border);
+  .guarantee-box strong { color: var(--ink); font-weight: 500; }
+
+  .features-unlock-title {
+    font-family: var(--serif);
+    font-size: 28px;
+    font-weight: 400;
     color: var(--ink);
-    background: transparent;
+    margin-bottom: 24px;
   }
-  .btn-plan-ghost:hover {
-    border-color: var(--accent);
-    color: var(--accent);
+  .features-unlock-title em {
+    font-style: italic;
+    color: var(--lime);
   }
-  .btn-plan-solid {
-    background: var(--accent);
-    color: var(--bg);
+  .features-unlock-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
   }
-  .btn-plan-solid:hover {
-    background: #86e61a;
+  .unlock-card {
+    background: var(--bg-2);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 24px 20px;
+    text-align: center;
+    transition: border-color 0.2s;
+  }
+  .unlock-card:hover { border-color: var(--lime); }
+  .unlock-icon {
+    width: 40px; height: 40px;
+    margin: 0 auto 12px;
+    color: var(--lime);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px;
+  }
+  .unlock-name {
+    font-size: 13px;
+    color: var(--ink);
+    font-weight: 500;
+    line-height: 1.4;
+  }
+
+  .get-started-cta {
+    text-align: center;
+    margin-top: 40px;
   }
 
   /* QUOTES */
@@ -754,20 +1081,14 @@
     display: flex; flex-direction: column;
   }
   .quote-stars {
-    color: var(--accent);
-    font-size: 12px;
-    margin-bottom: 20px;
-    letter-spacing: 2px;
+    color: var(--lime); font-size: 12px;
+    margin-bottom: 20px; letter-spacing: 2px;
   }
   .quote-text {
     font-family: var(--serif);
-    font-size: 17px;
-    font-weight: 400;
-    color: var(--ink);
-    line-height: 1.5;
-    margin-bottom: 24px;
-    flex: 1;
-    letter-spacing: -0.01em;
+    font-size: 17px; font-weight: 400;
+    color: var(--ink); line-height: 1.5;
+    margin-bottom: 24px; flex: 1;
   }
   .quote-author {
     display: flex; align-items: center; gap: 12px;
@@ -775,13 +1096,11 @@
     border-top: 1px solid var(--border);
   }
   .author-img {
-    width: 40px; height: 40px;
-    border-radius: 50%;
-    font-family: var(--serif);
-    font-size: 18px;
+    width: 40px; height: 40px; border-radius: 50%;
+    font-family: var(--serif); font-size: 18px;
     font-weight: 500;
     display: flex; align-items: center; justify-content: center;
-    color: var(--bg);
+    color: #fff;
   }
   .author-name { font-size: 14px; color: var(--ink); font-weight: 500; }
   .author-role { font-size: 12px; color: var(--ink-3); font-family: var(--mono); }
@@ -813,8 +1132,8 @@
     transition: all 0.3s;
   }
   .faq-item.open .faq-plus {
-    background: var(--accent);
-    border-color: var(--accent);
+    background: var(--lime);
+    border-color: var(--lime);
     color: var(--bg);
     transform: rotate(45deg);
   }
@@ -826,7 +1145,7 @@
     overflow: hidden;
     transition: max-height 0.4s, padding 0.3s;
   }
-  .faq-item.open .faq-a { max-height: 240px; padding-top: 16px; }
+  .faq-item.open .faq-a { max-height: 320px; padding-top: 16px; }
 
   /* FINAL CTA */
   .final-cta {
@@ -847,14 +1166,14 @@
     line-height: 0.95;
     letter-spacing: -0.03em;
     color: var(--ink);
-    margin-bottom: 24px;
+    margin-bottom: 20px;
   }
-  .final-cta h2 em { font-style: italic; color: var(--accent); font-weight: 400; }
+  .final-cta h2 em { font-style: italic; color: var(--lime); font-weight: 400; }
   .final-cta p {
     font-size: 18px;
     color: var(--ink-2);
     max-width: 520px;
-    margin: 0 auto 48px;
+    margin: 0 auto 40px;
   }
 
   /* FOOTER */
@@ -901,7 +1220,7 @@
     text-decoration: none;
     transition: color 0.2s;
   }
-  .footer-links a:hover { color: var(--accent); }
+  .footer-links a:hover { color: var(--lime); }
   .footer-bottom {
     max-width: 1200px;
     margin: 40px auto 0;
@@ -917,17 +1236,22 @@
 
   /* MOBILE */
   @media (max-width: 968px) {
-    nav { padding: 8px 8px 8px 16px; gap: 12px; }
+    nav { padding: 12px 16px; }
     .nav-links { display: none; }
-    .nav-cta { padding: 7px 14px; font-size: 12px; }
+    .nav-ghost { display: none; }
+    .nav-cta { padding: 8px 16px; font-size: 12px; }
     section { padding: 80px 20px; }
-    .bento-grid { grid-template-columns: 1fr; gap: 12px; }
-    .bento-card.large, .bento-card.medium, .bento-card.small, .bento-card.full { grid-column: span 1; }
-    .pricing-grid { grid-template-columns: 1fr; }
+    .bento-card.w6, .bento-card.w4, .bento-card.w3, .bento-card.w8 { grid-column: span 12; }
+    .plan-cards-row { grid-template-columns: 1fr; }
+    .features-unlock-grid { grid-template-columns: repeat(2, 1fr); }
     .quotes-grid { grid-template-columns: 1fr; }
+    .usecase-grid { grid-template-columns: repeat(2, 1fr); }
+    .int-grid { grid-template-columns: repeat(3, 1fr); }
     .footer-grid { grid-template-columns: 1fr 1fr; gap: 32px; }
     .compare-table th, .compare-table td { padding: 14px 12px; font-size: 12px; }
-    .hero { padding: 120px 20px 60px; }
+    .hero { padding: 60px 20px 40px; }
+    .hero-plan-top { flex-direction: column; gap: 20px; }
+    .hero-plan-avatar { align-self: flex-end; }
   }
 
   /* REVEAL */
@@ -942,58 +1266,74 @@
   .reveal.d3 { transition-delay: 0.3s; }
 </style>
 </head>
-<body>
+<body data-theme="dark">
 
 <!-- NAV -->
 <nav>
-  <a href="#" class="nav-logo">
-    <div class="nav-logo-mark">G</div>
-    AskGogo
-  </a>
-  <div class="nav-links">
-    <a href="#features">Features</a>
-    <a href="#compare">Why us</a>
-    <a href="#pricing">Pricing</a>
-    <a href="#faq">FAQ</a>
+  <div class="nav-left">
+    <a href="#" class="nav-logo">
+      <div class="logo-mark">G</div>
+      AskGogo
+    </a>
+    <div class="nav-links">
+      <a href="#features">Features</a>
+      <a href="#usecases">Use cases</a>
+      <a href="#integrations">Integrations</a>
+      <a href="#compare">vs Memorae</a>
+      <a href="#pricing">Pricing</a>
+    </div>
   </div>
-  <a href="https://t.me/askgogo_bot" class="nav-links nav-cta" style="display: inline-flex;">Try free →</a>
+  <div class="nav-right">
+    <button class="theme-toggle" onclick="toggleTheme()" id="themeBtn" title="Toggle light/dark">🌙</button>
+    <a href="#pricing" class="nav-ghost">Sign in</a>
+    <a href="https://t.me/askgogo_bot" class="nav-cta">Start free trial →</a>
+  </div>
 </nav>
 
 <!-- HERO -->
 <section class="hero">
   <div class="hero-bg"></div>
-  <div class="grid-pattern"></div>
+  <div class="grid-bg"></div>
 
   <div class="hero-badge">
     <span class="live-dot"></span>
-    Live on Telegram · v2.0
+    Live on Telegram · WhatsApp launching soon
   </div>
 
-  <h1>The AI that <span class="accent-word">remembers</span><br>your whole life.</h1>
+  <h1>Your AI chief of staff.<br>
+  <span class="accent">Remembers everything,</span><br>
+  runs your entire day.</h1>
 
-  <p class="hero-sub">Your personal memory assistant, living inside Telegram. Remembers everything you tell it. Fires reminders at the exact right moment. Thinks with you, not for you.</p>
+  <p class="hero-sub">A private AI that lives inside your chat app. <strong>Remembers facts, fires reminders, syncs your calendar, manages lists, transcribes voice notes, searches the web</strong> — all with a message.</p>
 
   <div class="hero-actions">
     <a href="https://t.me/askgogo_bot" class="btn-primary">
-      Start free on Telegram
+      Start 7-day free trial
       <span class="arrow">→</span>
     </a>
-    <a href="#demo" class="btn-secondary">See it in action</a>
+    <a href="#demo" class="btn-secondary">Watch demo ▸</a>
   </div>
 
-  <div class="trust-strip">
-    <span class="trust-strip-label">Built with</span>
-    <span class="trust-item"><strong>Claude AI</strong> — smarter than ChatGPT</span>
-    <span class="trust-item"><strong>Whisper</strong> voice transcription</span>
-    <span class="trust-item"><strong>Supabase</strong> — your data, private</span>
+  <div class="trial-note">
+    <strong>No card needed for free plan</strong> · 7-day free trial on Pro · Cancel anytime
+  </div>
+
+  <div class="channels-strip">
+    <span class="channels-label">Works inside</span>
+    <div class="channels-items">
+      <span class="channel-item"><strong>Telegram</strong> <span class="channel-badge badge-live">Live</span></span>
+      <span class="channel-item"><strong>WhatsApp</strong> <span class="channel-badge badge-soon">Soon</span></span>
+      <span class="channel-item"><strong>Web</strong> <span class="channel-badge badge-live">Dashboard</span></span>
+      <span class="channel-item"><strong>Email</strong> <span class="channel-badge badge-soon">Soon</span></span>
+    </div>
   </div>
 </section>
 
-<!-- INTERACTIVE DEMO -->
+<!-- DEMO -->
 <section class="demo-section" id="demo">
   <div class="container" style="text-align: center; margin-bottom: 48px;">
-    <span class="section-label">Try a live demo</span>
-    <h2 class="section-title" style="margin: 0 auto;">See it <em>remember</em>.<br>Watch it <em>remind</em>.</h2>
+    <span class="section-label">See it live</span>
+    <h2 class="section-title" style="margin: 0 auto;">Seven <em>superpowers.</em><br>One chat.</h2>
   </div>
 
   <div class="demo-container">
@@ -1008,104 +1348,253 @@
     </div>
     <div class="demo-body" id="demoBody"></div>
     <div class="demo-controls">
-      <button class="demo-chip active" onclick="playScenario(0, this)">Memory</button>
-      <button class="demo-chip" onclick="playScenario(1, this)">Reminder</button>
-      <button class="demo-chip" onclick="playScenario(2, this)">Voice note</button>
-      <button class="demo-chip" onclick="playScenario(3, this)">Ask anything</button>
+      <button class="demo-chip active" data-idx="0">🧠 Memory</button>
+      <button class="demo-chip" data-idx="1">⏰ Reminder</button>
+      <button class="demo-chip" data-idx="2">🎤 Voice</button>
+      <button class="demo-chip" data-idx="3">📅 Calendar</button>
+      <button class="demo-chip" data-idx="4">📋 Lists</button>
+      <button class="demo-chip" data-idx="5">📰 Briefing</button>
+      <button class="demo-chip" data-idx="6">🧘 Breathe</button>
     </div>
   </div>
 </section>
 
-<!-- BENTO FEATURES -->
+<!-- FEATURES BENTO -->
 <section id="features">
   <div class="container">
-    <span class="section-label reveal">Capabilities</span>
-    <h2 class="section-title reveal d1">Everything you need.<br><em>Nothing you don't.</em></h2>
-    <p class="section-sub reveal d2">Three core superpowers. No bloat. No apps. Just a chat inside Telegram that quietly handles your life.</p>
+    <span class="section-label reveal">Everything inside</span>
+    <h2 class="section-title reveal d1">Not a chatbot.<br><em>A second brain.</em></h2>
+    <p class="section-sub reveal d2">AskGogo isn't just AI that chats. It remembers, schedules, connects, and acts — silently running in the background of your favourite messenger.</p>
 
-    <div class="bento-grid">
-      <!-- MEMORY -->
-      <div class="bento-card large reveal">
-        <div class="bento-eyebrow">01 · Memory</div>
-        <h3 class="bento-title">Your <em>second brain,</em><br>always listening.</h3>
-        <p class="bento-text">Tell it a fact, a name, a password hint, a colleague's preference — it stores it with perfect recall. View everything in your personal dashboard anytime.</p>
+    <div class="bento">
+      <div class="bento-card w8 reveal">
+        <div class="bento-eyebrow"><div class="bento-eyebrow-icon">🧠</div> 01 · Memory</div>
+        <h3 class="bento-title">Your <em>second brain,</em> always listening.</h3>
+        <p class="bento-text">Tell it any fact and it stores it forever. Phone numbers, birthdays, preferences, login hints, project status, contact details. Instantly recalled when needed.</p>
         <div class="bento-visual">
-          <div class="memory-chip" style="animation-delay: 0.1s"><span class="memory-tag">Work</span> Divya's number: +91 98765 43210</div>
-          <div class="memory-chip" style="animation-delay: 0.3s"><span class="memory-tag">Personal</span> Wife's birthday: May 15</div>
-          <div class="memory-chip" style="animation-delay: 0.5s"><span class="memory-tag">Health</span> Takes vitamin D daily 8am</div>
+          <div class="mem-list">
+            <div class="mem-chip"><span class="mem-tag tag-violet">Wife</span> Divya's birthday: February 6th 🌹</div>
+            <div class="mem-chip"><span class="mem-tag tag-lime">Work</span> Investor meeting every Thursday 4pm</div>
+            <div class="mem-chip"><span class="mem-tag tag-coral">Health</span> Vitamin D at 8am daily</div>
+            <div class="mem-chip"><span class="mem-tag tag-blue">Project</span> API key expires June 15</div>
+          </div>
         </div>
       </div>
 
-      <!-- REMINDER -->
-      <div class="bento-card medium reveal d1">
-        <div class="bento-eyebrow">02 · Reminders</div>
+      <div class="bento-card w4 reveal d1">
+        <div class="bento-eyebrow"><div class="bento-eyebrow-icon">⏰</div> 02 · Reminders</div>
         <h3 class="bento-title"><em>Precise</em> to the minute.</h3>
-        <p class="bento-text">One-time or recurring. Daily, weekly, every Monday. Cron-powered delivery — never late, never missed.</p>
+        <p class="bento-text">One-time or recurring. Fires exactly when you need.</p>
         <div class="bento-visual">
-          <div class="reminder-visual">
-            <div class="reminder-row">
-              <span class="reminder-emoji">💊</span>
-              <div class="reminder-info">
-                <div class="reminder-msg">Take medicine</div>
-                <div class="reminder-meta">daily · 8:00 AM IST</div>
+          <div class="rem-box">
+            <div class="rem-row">
+              <span class="rem-emoji">💊</span>
+              <div class="rem-info">
+                <div class="rem-msg">Take medicine</div>
+                <div class="rem-meta">8:00 AM · daily</div>
               </div>
-              <span class="reminder-badge">🔁 daily</span>
+              <span class="rem-badge">🔁</span>
             </div>
-            <div class="reminder-row">
-              <span class="reminder-emoji">📞</span>
-              <div class="reminder-info">
-                <div class="reminder-msg">Call Divya</div>
-                <div class="reminder-meta">mon · 9:00 AM</div>
+            <div class="rem-row">
+              <span class="rem-emoji">💐</span>
+              <div class="rem-info">
+                <div class="rem-msg">Divya's birthday flowers</div>
+                <div class="rem-meta">Feb 5, 10 AM</div>
               </div>
-              <span class="reminder-badge">🔁 weekly</span>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- VOICE -->
-      <div class="bento-card medium reveal d2">
-        <div class="bento-eyebrow">03 · Voice</div>
-        <h3 class="bento-title">Just <em>speak</em> to it.</h3>
-        <p class="bento-text">Record a voice note while driving. Whisper AI transcribes. Claude processes. Reminder set. Zero typing.</p>
+      <div class="bento-card w4 reveal">
+        <div class="bento-eyebrow"><div class="bento-eyebrow-icon">📅</div> 03 · Calendar</div>
+        <h3 class="bento-title">Google Calendar, <em>2-way sync.</em></h3>
+        <p class="bento-text">"Add meeting Friday 3pm" — creates the event. Events sync back to the bot.</p>
         <div class="bento-visual">
-          <div class="voice-visual">
+          <div class="cal-card">
+            <div class="cal-day">Today · Friday, Apr 18</div>
+            <div class="cal-event">
+              <div class="cal-time">10:00</div>
+              <div class="cal-dot" style="background:var(--violet)"></div>
+              <div class="cal-title">Team standup</div>
+            </div>
+            <div class="cal-event">
+              <div class="cal-time">14:30</div>
+              <div class="cal-dot" style="background:var(--lime)"></div>
+              <div class="cal-title">Investor pitch</div>
+            </div>
+            <div class="cal-event">
+              <div class="cal-time">18:00</div>
+              <div class="cal-dot" style="background:var(--coral)"></div>
+              <div class="cal-title">Dinner with Divya ❤️</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="bento-card w4 reveal d1">
+        <div class="bento-eyebrow"><div class="bento-eyebrow-icon">📋</div> 04 · Lists</div>
+        <h3 class="bento-title">Shopping, todos, <em>any list.</em></h3>
+        <p class="bento-text">"Add milk to shopping" — instantly updated. Unlimited named lists.</p>
+        <div class="bento-visual">
+          <div class="list-card">
+            <div class="list-title">🛒 Shopping list <span class="list-count">5 items</span></div>
+            <div class="list-item done"><div class="list-check checked">✓</div> Milk</div>
+            <div class="list-item done"><div class="list-check checked">✓</div> Bread</div>
+            <div class="list-item"><div class="list-check"></div> Eggs</div>
+            <div class="list-item"><div class="list-check"></div> Flowers for Divya</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="bento-card w4 reveal d2">
+        <div class="bento-eyebrow"><div class="bento-eyebrow-icon">🎤</div> 05 · Voice notes</div>
+        <h3 class="bento-title">Just <em>speak</em> to it.</h3>
+        <p class="bento-text">Record while driving. Whisper AI transcribes. Done.</p>
+        <div class="bento-visual">
+          <div class="voice-bar">
             <div class="voice-mic">🎤</div>
             <div class="voice-wave">
-              <div class="wave-bar"></div>
-              <div class="wave-bar"></div>
-              <div class="wave-bar"></div>
-              <div class="wave-bar"></div>
-              <div class="wave-bar"></div>
-              <div class="wave-bar"></div>
-              <div class="wave-bar"></div>
-              <div class="wave-bar"></div>
+              <div class="wave-bar"></div><div class="wave-bar"></div>
+              <div class="wave-bar"></div><div class="wave-bar"></div>
+              <div class="wave-bar"></div><div class="wave-bar"></div>
+              <div class="wave-bar"></div><div class="wave-bar"></div>
             </div>
             <div class="voice-time">0:08</div>
           </div>
         </div>
       </div>
 
-      <!-- AI -->
-      <div class="bento-card small reveal d1">
-        <div class="bento-eyebrow">04 · AI</div>
-        <h3 class="bento-title">Claude, not<br><em>ChatGPT.</em></h3>
-        <p class="bento-text">Anthropic's smartest model. Better reasoning. More nuance. Understands context.</p>
+      <div class="bento-card w6 reveal">
+        <div class="bento-eyebrow"><div class="bento-eyebrow-icon">📰</div> 06 · Daily briefings</div>
+        <h3 class="bento-title">Your day, <em>summarised at 7am.</em></h3>
+        <p class="bento-text">Every morning — meetings, reminders, tasks, weather. One message, everything you need.</p>
+        <div class="bento-visual">
+          <div class="brief-card">
+            <div class="brief-greet">Good morning, Gogo ☀️</div>
+            <div class="brief-item"><div class="brief-dot"></div> 3 meetings today (next: 10am standup)</div>
+            <div class="brief-item"><div class="brief-dot"></div> 5 reminders pending</div>
+            <div class="brief-item"><div class="brief-dot"></div> Shopping list has 5 items</div>
+            <div class="brief-item"><div class="brief-dot"></div> Bengaluru · 28°C · Clear</div>
+          </div>
+        </div>
       </div>
 
-      <!-- PRIVACY -->
-      <div class="bento-card small reveal d2">
-        <div class="bento-eyebrow">05 · Privacy</div>
-        <h3 class="bento-title">Your data is<br><em>yours.</em></h3>
-        <p class="bento-text">Encrypted storage. No ads. No third-party sharing. Ever.</p>
+      <div class="bento-card w6 reveal d1">
+        <div class="bento-eyebrow"><div class="bento-eyebrow-icon">📸</div> 07 · Image + web search</div>
+        <h3 class="bento-title">Photo it. <em>Ask it.</em></h3>
+        <p class="bento-text">Snap your fridge — it builds a shopping list. Ask any question — it searches the web. Send any PDF — it summarises.</p>
+        <div class="bento-visual">
+          <div class="mem-list">
+            <div class="mem-chip"><span class="mem-tag tag-violet">Photo</span> 📷 Fridge scan → 8 items to restock</div>
+            <div class="mem-chip"><span class="mem-tag tag-blue">Search</span> 🔍 "Latest Tesla earnings" → summary</div>
+            <div class="mem-chip"><span class="mem-tag tag-coral">PDF</span> 📄 Contract.pdf → 3 risks flagged</div>
+          </div>
+        </div>
       </div>
 
-      <!-- DASHBOARD -->
-      <div class="bento-card small reveal d3">
-        <div class="bento-eyebrow">06 · Dashboard</div>
-        <h3 class="bento-title">See <em>everything</em><br>on the web.</h3>
-        <p class="bento-text">Full memory browser, reminder list, usage stats. Nothing hidden.</p>
+      <div class="bento-card w3 reveal">
+        <div class="bento-eyebrow"><div class="bento-eyebrow-icon">🧘</div> 08 · Breathe</div>
+        <h3 class="bento-title"><em>4-4-4-4</em> box breathing.</h3>
+        <p class="bento-text">Guided meditation with sound. Pause. Breathe. Reset.</p>
+        <div class="bento-visual" style="display: flex; flex-direction: column; align-items: center; gap: 8px;">
+          <div class="breathe-circle" style="width: 60px; height: 60px; font-size: 9px;">breathe in</div>
+        </div>
       </div>
+
+      <div class="bento-card w3 reveal d1">
+        <div class="bento-eyebrow"><div class="bento-eyebrow-icon">🎭</div> 09 · Persona</div>
+        <h3 class="bento-title">Your <em>tone,</em> your vibe.</h3>
+        <p class="bento-text">Professional. Mentor. Playful friend. You choose.</p>
+      </div>
+
+      <div class="bento-card w3 reveal d2">
+        <div class="bento-eyebrow"><div class="bento-eyebrow-icon">🌍</div> 10 · Multilingual</div>
+        <h3 class="bento-title">Hindi, Tamil, <em>any language.</em></h3>
+        <p class="bento-text">Auto-detects. Replies in yours. India-first.</p>
+      </div>
+
+      <div class="bento-card w3 reveal d3">
+        <div class="bento-eyebrow"><div class="bento-eyebrow-icon">👥</div> 11 · Teams</div>
+        <h3 class="bento-title">Family <em>or work.</em></h3>
+        <p class="bento-text">Shared memories, team reminders, delegation.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- USE CASES -->
+<section id="usecases">
+  <div class="container">
+    <span class="section-label reveal">Use cases</span>
+    <h2 class="section-title reveal d1">Built for<br><em>anyone who thinks.</em></h2>
+    <p class="section-sub reveal d2">From entrepreneurs to parents, doctors to students — AskGogo adapts to how you already live.</p>
+
+    <div class="usecase-grid">
+      <div class="usecase-card reveal">
+        <div class="usecase-icon">🚀</div>
+        <div class="usecase-name">Founders</div>
+        <div class="usecase-desc">Investor details, meeting notes, customer context, follow-ups that never slip.</div>
+      </div>
+      <div class="usecase-card reveal d1">
+        <div class="usecase-icon">💼</div>
+        <div class="usecase-name">Sales teams</div>
+        <div class="usecase-desc">Client preferences, deal stages, follow-up reminders, context before every call.</div>
+      </div>
+      <div class="usecase-card reveal d2">
+        <div class="usecase-icon">👨‍👩‍👧</div>
+        <div class="usecase-name">Parents</div>
+        <div class="usecase-desc">School dates, medicine schedules, birthdays, grocery lists — all at your fingertips.</div>
+      </div>
+      <div class="usecase-card reveal d3">
+        <div class="usecase-icon">🩺</div>
+        <div class="usecase-name">Doctors</div>
+        <div class="usecase-desc">Patient follow-ups, prescription alerts, conference reminders, case notes.</div>
+      </div>
+      <div class="usecase-card reveal">
+        <div class="usecase-icon">🎓</div>
+        <div class="usecase-name">Students</div>
+        <div class="usecase-desc">Assignments, exam dates, study schedules, research notes — all in one chat.</div>
+      </div>
+      <div class="usecase-card reveal d1">
+        <div class="usecase-icon">🏠</div>
+        <div class="usecase-name">Realtors</div>
+        <div class="usecase-desc">Client preferences, property showings, follow-up reminders, document checklists.</div>
+      </div>
+      <div class="usecase-card reveal d2">
+        <div class="usecase-icon">💪</div>
+        <div class="usecase-name">Fitness</div>
+        <div class="usecase-desc">Workout reminders, meal plans, progress notes, recovery schedules.</div>
+      </div>
+      <div class="usecase-card reveal d3">
+        <div class="usecase-icon">✈️</div>
+        <div class="usecase-name">Travellers</div>
+        <div class="usecase-desc">Flight times, hotel details, packing lists, currency rates, itineraries.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- INTEGRATIONS -->
+<section id="integrations" style="background: var(--bg-2);">
+  <div class="container">
+    <span class="section-label reveal">Integrations</span>
+    <h2 class="section-title reveal d1">Connects to<br><em>everything you use.</em></h2>
+    <p class="section-sub reveal d2">AskGogo sits on top of your existing stack. No migration, no new apps — just connect and start.</p>
+
+    <div class="int-grid">
+      <div class="int-card reveal"><div class="int-icon">📅</div><div class="int-name">Google Calendar</div><span class="int-status int-live">Live</span></div>
+      <div class="int-card reveal"><div class="int-icon">💬</div><div class="int-name">Telegram</div><span class="int-status int-live">Live</span></div>
+      <div class="int-card reveal"><div class="int-icon">📱</div><div class="int-name">WhatsApp</div><span class="int-status int-soon">Soon</span></div>
+      <div class="int-card reveal"><div class="int-icon">📧</div><div class="int-name">Gmail</div><span class="int-status int-soon">Soon</span></div>
+      <div class="int-card reveal d1"><div class="int-icon">📊</div><div class="int-name">Notion</div><span class="int-status int-soon">Soon</span></div>
+      <div class="int-card reveal d1"><div class="int-icon">🎙️</div><div class="int-name">Whisper AI</div><span class="int-status int-live">Live</span></div>
+      <div class="int-card reveal d1"><div class="int-icon">🧠</div><div class="int-name">Claude AI</div><span class="int-status int-live">Live</span></div>
+      <div class="int-card reveal d1"><div class="int-icon">📆</div><div class="int-name">Outlook</div><span class="int-status int-soon">Soon</span></div>
+      <div class="int-card reveal d2"><div class="int-icon">🎵</div><div class="int-name">Spotify</div><span class="int-status int-soon">Soon</span></div>
+      <div class="int-card reveal d2"><div class="int-icon">💳</div><div class="int-name">Razorpay</div><span class="int-status int-live">Live</span></div>
+      <div class="int-card reveal d2"><div class="int-icon">🗺️</div><div class="int-name">Google Maps</div><span class="int-status int-soon">Soon</span></div>
+      <div class="int-card reveal d2"><div class="int-icon">⚡</div><div class="int-name">Zapier</div><span class="int-status int-soon">Soon</span></div>
     </div>
   </div>
 </section>
@@ -1114,7 +1603,7 @@
 <section class="compare-section" id="compare">
   <div class="container">
     <span class="section-label reveal">Honest comparison</span>
-    <h2 class="section-title reveal d1">Why we <em>beat</em> the rest.</h2>
+    <h2 class="section-title reveal d1">Why we <em>beat</em><br>Memorae and Notis.</h2>
     <p class="section-sub reveal d2">We looked at every competitor. Here's exactly where AskGogo wins — with no marketing fluff.</p>
 
     <div class="compare-wrap reveal">
@@ -1124,18 +1613,24 @@
             <th></th>
             <th>Memorae</th>
             <th>Notis</th>
-            <th class="ours">AskGogo</th>
+            <th class="ours">AskGogo ⭐</th>
           </tr>
         </thead>
         <tbody>
-          <tr><td class="feature">AI model</td><td class="losing">ChatGPT</td><td class="losing">ChatGPT</td><td class="ours">Claude — smartest model</td></tr>
+          <tr><td class="feature">AI model</td><td class="losing">ChatGPT</td><td class="losing">ChatGPT</td><td class="ours">Claude Sonnet 4.5</td></tr>
           <tr><td class="feature">Memory dashboard</td><td class="losing">None</td><td class="losing">Limited</td><td class="ours">Full web dashboard</td></tr>
-          <tr><td class="feature">Recurring reminders</td><td>Basic</td><td>Basic</td><td class="ours">Every day / week / Monday</td></tr>
-          <tr><td class="feature">Voice notes</td><td>Basic</td><td>Yes</td><td class="ours">Whisper AI</td></tr>
-          <tr><td class="feature">Reminder precision</td><td class="losing">Known delays</td><td>Good</td><td class="ours">Every 60 seconds</td></tr>
-          <tr><td class="feature">India pricing</td><td class="losing">$2.99 USD</td><td class="losing">$9 USD</td><td class="ours">₹299/month</td></tr>
-          <tr><td class="feature">Free tier</td><td>Limited</td><td class="losing">None</td><td class="ours">20 msgs/day forever</td></tr>
-          <tr><td class="feature">Founder support</td><td class="losing">Outsourced</td><td>Small team</td><td class="ours">Direct — I built this</td></tr>
+          <tr><td class="feature">Recurring reminders</td><td>Basic</td><td>Basic</td><td class="ours">Smart patterns</td></tr>
+          <tr><td class="feature">Voice notes</td><td>Yes</td><td>Yes</td><td class="ours">Whisper AI</td></tr>
+          <tr><td class="feature">Google Calendar</td><td>Yes (laggy)</td><td>Beta</td><td class="ours">Real-time sync</td></tr>
+          <tr><td class="feature">Lists</td><td>Yes</td><td class="losing">No</td><td class="ours">Unlimited lists</td></tr>
+          <tr><td class="feature">Daily briefings</td><td>Supernova only</td><td class="losing">No</td><td class="ours">All paid plans</td></tr>
+          <tr><td class="feature">Image analysis</td><td>Supernova only</td><td class="losing">No</td><td class="ours">All paid plans</td></tr>
+          <tr><td class="feature">Web search</td><td>Supernova only</td><td>Yes</td><td class="ours">All paid plans</td></tr>
+          <tr><td class="feature">Guided breathing</td><td>Yes</td><td class="losing">No</td><td class="ours">Yes · 4-4-4-4 box</td></tr>
+          <tr><td class="feature">India pricing</td><td class="losing">₹300-835/mo</td><td class="losing">₹750+/mo</td><td class="ours">₹149-299/mo</td></tr>
+          <tr><td class="feature">Free tier</td><td class="losing">Trial only</td><td class="losing">None</td><td class="ours">Free forever</td></tr>
+          <tr><td class="feature">Platform</td><td class="losing">WhatsApp only</td><td>Multi</td><td class="ours">Telegram + WA soon</td></tr>
+          <tr><td class="feature">Founder support</td><td class="losing">Unresponsive</td><td>Small team</td><td class="ours">Direct from founder</td></tr>
         </tbody>
       </table>
     </div>
@@ -1160,10 +1655,9 @@
           </div>
         </div>
       </div>
-
       <div class="quote-card reveal d1">
         <div class="quote-stars">★ ★ ★ ★ ★</div>
-        <p class="quote-text">"Replaced three productivity apps with one Telegram bot. Never missing a follow-up again. My customers think I'm psychic."</p>
+        <p class="quote-text">"Replaced three productivity apps with one Telegram bot. My customers think I'm psychic. Worth every rupee."</p>
         <div class="quote-author">
           <div class="author-img" style="background: linear-gradient(135deg, #b8ff4a, #86e61a);">P</div>
           <div>
@@ -1172,10 +1666,9 @@
           </div>
         </div>
       </div>
-
       <div class="quote-card reveal d2">
         <div class="quote-stars">★ ★ ★ ★ ★</div>
-        <p class="quote-text">"The voice note feature is magic. I record while driving, it understands, it acts. This is what AI should feel like."</p>
+        <p class="quote-text">"Voice notes while driving are pure magic. Records it, transcribes it, sets the reminder. This is what AI should feel like."</p>
         <div class="quote-author">
           <div class="author-img" style="background: linear-gradient(135deg, #7c3aed, #c4b5fd);">A</div>
           <div>
@@ -1188,57 +1681,125 @@
   </div>
 </section>
 
-<!-- PRICING -->
+<!-- PRICING (Memorae-inspired) -->
 <section id="pricing" class="pricing-section">
-  <div class="container">
-    <span class="section-label reveal">Pricing</span>
-    <h2 class="section-title reveal d1">Start <em>free.</em><br>Upgrade when ready.</h2>
-    <p class="section-sub reveal d2">Built for India. Honest pricing. Cancel anytime.</p>
+  <div class="container" style="max-width: 720px;">
+    <div style="text-align: center; margin-bottom: 40px;">
+      <span class="section-label reveal">Pricing</span>
+      <h2 class="section-title reveal d1" style="text-align: center;">Pick your <em>plan.</em></h2>
+    </div>
 
-    <div class="pricing-grid">
-      <div class="pricing-card reveal">
-        <div class="plan-name">Free</div>
-        <div class="plan-price"><sup>₹</sup>0</div>
-        <div class="plan-desc">Forever free · no card needed</div>
-        <div class="plan-divider"></div>
-        <ul class="plan-features">
-          <li class="plan-feature"><span class="plan-check">✓</span> 20 messages per day</li>
-          <li class="plan-feature"><span class="plan-check">✓</span> 10 saved memories</li>
-          <li class="plan-feature"><span class="plan-check">✓</span> Basic reminders</li>
-          <li class="plan-feature"><span class="plan-check">✓</span> Web dashboard</li>
-        </ul>
-        <a href="https://t.me/askgogo_bot" class="btn-plan btn-plan-ghost">Start free</a>
+    <div style="text-align: center;" class="reveal d2">
+      <div class="pricing-toggle">
+        <button class="toggle-opt active" onclick="togglePrice('monthly', this)">Monthly</button>
+        <button class="toggle-opt" onclick="togglePrice('annual', this)">Annual <span class="save-badge">-40%</span></button>
       </div>
+    </div>
 
-      <div class="pricing-card featured reveal d1">
-        <div class="plan-name">Starter</div>
-        <div class="plan-price"><sup>₹</sup>299<sub>/mo</sub></div>
-        <div class="plan-desc">For serious users</div>
-        <div class="plan-divider"></div>
-        <ul class="plan-features">
-          <li class="plan-feature"><span class="plan-check">✓</span> 100 messages per day</li>
-          <li class="plan-feature"><span class="plan-check">✓</span> 50 saved memories</li>
-          <li class="plan-feature"><span class="plan-check">✓</span> Smart recurring reminders</li>
-          <li class="plan-feature"><span class="plan-check">✓</span> Voice notes via Whisper</li>
-          <li class="plan-feature"><span class="plan-check">✓</span> Priority AI responses</li>
-        </ul>
-        <a href="https://t.me/askgogo_bot" class="btn-plan btn-plan-solid">Upgrade to Starter →</a>
+    <!-- Hero plan card -->
+    <div class="hero-plan-card reveal">
+      <div class="hero-plan-top">
+        <div>
+          <div class="hero-plan-label">
+            <span style="display: inline-block; width: 14px; height: 14px; background: rgba(255,255,255,0.2); border-radius: 4px;"></span>
+            OPERATIONAL MEMORY
+          </div>
+          <div class="hero-plan-name" id="heroPlanName">Pro</div>
+          <div class="hero-trial-badge">7 DAYS FREE</div>
+          <div class="hero-plan-sub" id="heroPlanSub">12 months for ₹1,999</div>
+          <a href="#features" class="compare-plans">Compare plans →</a>
+        </div>
+        <div class="hero-plan-avatar">🧠</div>
       </div>
+    </div>
 
-      <div class="pricing-card reveal d2">
-        <div class="plan-name">Pro</div>
-        <div class="plan-price"><sup>₹</sup>999<sub>/mo</sub></div>
-        <div class="plan-desc">For power users & teams</div>
-        <div class="plan-divider"></div>
-        <ul class="plan-features">
-          <li class="plan-feature"><span class="plan-check">✓</span> Unlimited messages</li>
-          <li class="plan-feature"><span class="plan-check">✓</span> 500 saved memories</li>
-          <li class="plan-feature"><span class="plan-check">✓</span> Team reminders</li>
-          <li class="plan-feature"><span class="plan-check">✓</span> Google Calendar sync</li>
-          <li class="plan-feature"><span class="plan-check">✓</span> Priority founder support</li>
-        </ul>
-        <a href="https://t.me/askgogo_bot" class="btn-plan btn-plan-ghost">Go Pro</a>
+    <!-- Three plan cards -->
+    <div class="plan-cards-row">
+      <div class="plan-mini-card" onclick="selectPlan(this, 'starter')">
+        <div class="plan-mini-name">Starter</div>
+        <div class="plan-mini-price" id="p1">₹149</div>
+        <div class="plan-mini-period">per month</div>
       </div>
+      <div class="plan-mini-card plan-mini-popular selected" onclick="selectPlan(this, 'pro')" id="proCard">
+        <div class="plan-mini-name" style="color: #0a0a0f;">Pro</div>
+        <div class="plan-mini-price" id="p2" style="color: #0a0a0f;">₹299 <span class="cut" style="color: rgba(7,7,10,0.5);" id="p2cut">₹499</span></div>
+        <div class="plan-mini-period" style="color: rgba(7,7,10,0.7);">per month</div>
+        <div class="plan-mini-popular-tag">Most popular</div>
+      </div>
+      <div class="plan-mini-card" onclick="selectPlan(this, 'lifetime')">
+        <div class="plan-mini-name">Lifetime</div>
+        <div class="plan-mini-price" id="p3">₹9,999</div>
+        <div class="plan-mini-period">one-time</div>
+      </div>
+    </div>
+
+    <!-- Guarantee box -->
+    <div class="guarantee-box">
+      <div class="guarantee-icon">🛡️</div>
+      <div>
+        <strong>14 risk-free days:</strong> 7 days free + 7 days with a money-back guarantee. Try it without paying. We'll refund your money if it's not for you.
+      </div>
+    </div>
+
+    <!-- Unlock features -->
+    <h3 class="features-unlock-title">Everything you unlock<br>with <em>Pro</em></h3>
+
+    <div class="features-unlock-grid">
+      <div class="unlock-card">
+        <div class="unlock-icon">⏰</div>
+        <div class="unlock-name">Unlimited reminders</div>
+      </div>
+      <div class="unlock-card">
+        <div class="unlock-icon">🧠</div>
+        <div class="unlock-name">Memory everywhere</div>
+      </div>
+      <div class="unlock-card">
+        <div class="unlock-icon">📅</div>
+        <div class="unlock-name">Multi-calendar sync</div>
+      </div>
+      <div class="unlock-card">
+        <div class="unlock-icon">📦</div>
+        <div class="unlock-name">Memory trunk</div>
+      </div>
+      <div class="unlock-card">
+        <div class="unlock-icon">📋</div>
+        <div class="unlock-name">Create & manage lists</div>
+      </div>
+      <div class="unlock-card">
+        <div class="unlock-icon">👥</div>
+        <div class="unlock-name">Friend-to-friend reminders</div>
+      </div>
+      <div class="unlock-card">
+        <div class="unlock-icon">🎤</div>
+        <div class="unlock-name">Voice notes (Whisper)</div>
+      </div>
+      <div class="unlock-card">
+        <div class="unlock-icon">📰</div>
+        <div class="unlock-name">Daily briefings</div>
+      </div>
+      <div class="unlock-card">
+        <div class="unlock-icon">🧘</div>
+        <div class="unlock-name">Guided breathing</div>
+      </div>
+      <div class="unlock-card">
+        <div class="unlock-icon">📸</div>
+        <div class="unlock-name">Image analysis</div>
+      </div>
+      <div class="unlock-card">
+        <div class="unlock-icon">🔍</div>
+        <div class="unlock-name">Web search</div>
+      </div>
+      <div class="unlock-card">
+        <div class="unlock-icon">🌍</div>
+        <div class="unlock-name">Multilingual (Hindi+)</div>
+      </div>
+    </div>
+
+    <div class="get-started-cta">
+      <a href="https://t.me/askgogo_bot" class="btn-primary" style="font-size: 15px;">
+        Start 7-day free trial
+        <span class="arrow">→</span>
+      </a>
     </div>
   </div>
 </section>
@@ -1251,28 +1812,32 @@
 
     <div class="faq-wrap reveal" style="margin-top: 60px;">
       <div class="faq-item" onclick="toggleFaq(this)">
-        <div class="faq-q">Do I need to download an app? <div class="faq-plus">+</div></div>
-        <div class="faq-a">No. AskGogo lives inside Telegram, which you likely already have. Open the bot link, click Start, and talk naturally. Nothing to install, nothing to learn.</div>
+        <div class="faq-q">How does the 7-day free trial work? <div class="faq-plus">+</div></div>
+        <div class="faq-a">Click "Start 7-day free trial" → we verify your card with a tiny ₹1 charge (refunded instantly) → you get FULL Pro access for 7 days. On Day 6, we send a clear reminder that you'll be billed tomorrow. On Day 7, you're charged ₹299 only if you don't cancel. No sneaky charges, ever. Cancel anytime by typing /cancel in the bot.</div>
       </div>
       <div class="faq-item" onclick="toggleFaq(this)">
         <div class="faq-q">How is this different from ChatGPT? <div class="faq-plus">+</div></div>
-        <div class="faq-a">Three things: AskGogo uses Claude AI (smarter reasoning, better at following instructions), it has persistent memory across all conversations, and it actively reminds you — it's not just a chatbot, it's an assistant that takes action on your behalf.</div>
+        <div class="faq-a">Three big differences: (1) AskGogo uses Claude AI — smarter reasoning and better instruction-following than ChatGPT. (2) It has persistent memory that grows with you — ChatGPT forgets after every conversation. (3) It takes action — fires reminders, syncs calendar, manages lists. ChatGPT just talks.</div>
       </div>
       <div class="faq-item" onclick="toggleFaq(this)">
         <div class="faq-q">Is my data private? <div class="faq-plus">+</div></div>
-        <div class="faq-a">Yes, absolutely. Your memories and conversations are stored securely in your own encrypted database. We never sell data, never show you ads, and never share your information with third parties. You can delete everything anytime.</div>
+        <div class="faq-a">Yes, absolutely. Your memories and conversations are stored encrypted in your own dedicated database. We never sell data, never show ads, never share with third parties. You can delete everything with one command (/wipe). GDPR-compliant, security-first architecture.</div>
       </div>
       <div class="faq-item" onclick="toggleFaq(this)">
-        <div class="faq-q">Does it really work with voice notes? <div class="faq-plus">+</div></div>
-        <div class="faq-a">Yes. Record any voice message in Telegram and AskGogo transcribes it using Whisper AI (OpenAI's speech-to-text) and processes it exactly as if you typed it. Works flawlessly in English, perfect while driving or walking.</div>
+        <div class="faq-q">Do I need to install an app? <div class="faq-plus">+</div></div>
+        <div class="faq-a">No. AskGogo lives inside Telegram (and WhatsApp soon), which you already have. Click the bot link, press Start, and talk naturally. Nothing to install, nothing to learn. It just works.</div>
+      </div>
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-q">Can I connect my Google Calendar? <div class="faq-plus">+</div></div>
+        <div class="faq-a">Yes. On any paid plan, type /calendar and connect your Google account in 10 seconds. Events you create via AskGogo appear in Calendar instantly. Events from Calendar show up in your bot's daily briefing. True two-way sync.</div>
       </div>
       <div class="faq-item" onclick="toggleFaq(this)">
         <div class="faq-q">When will WhatsApp be supported? <div class="faq-plus">+</div></div>
-        <div class="faq-a">WhatsApp is coming soon. We launched on Telegram first because it's faster, more reliable, and has a better API for AI assistants. Once we cross 100 paying users, WhatsApp support will be added at no extra cost for all existing subscribers.</div>
+        <div class="faq-a">WhatsApp launches next month. Meta requires proof of active users before approving Business API — we're in final review. Once live, every existing user gets free WhatsApp access. Follow @askgogo_bot on Telegram for the announcement.</div>
       </div>
       <div class="faq-item" onclick="toggleFaq(this)">
         <div class="faq-q">Can I cancel anytime? <div class="faq-plus">+</div></div>
-        <div class="faq-a">Yes. No contracts, no lock-ins. Cancel your subscription from your dashboard anytime and you'll stay on the paid plan until the end of your billing cycle, then automatically move to the Free plan with all your memories intact.</div>
+        <div class="faq-a">Yes. Type /cancel in the bot or cancel from your web dashboard. You'll keep Pro access until your billing cycle ends, then automatically downgrade to Free plan. All your memories stay intact forever.</div>
       </div>
     </div>
   </div>
@@ -1283,9 +1848,9 @@
   <div class="container">
     <div class="final-cta reveal">
       <h2>Your second brain.<br><em>One message away.</em></h2>
-      <p>Free to start. No credit card. No app download. Just open Telegram and say hi.</p>
+      <p>Free to start. 7-day Pro trial available. No credit card for Free plan.</p>
       <a href="https://t.me/askgogo_bot" class="btn-primary" style="font-size: 16px; padding: 18px 36px;">
-        Open Telegram
+        Start free on Telegram
         <span class="arrow">→</span>
       </a>
     </div>
@@ -1297,18 +1862,18 @@
   <div class="footer-grid">
     <div>
       <div class="footer-brand">
-        <div class="nav-logo-mark">G</div>
+        <div class="logo-mark">G</div>
         AskGogo
       </div>
-      <p class="footer-desc">Your AI memory assistant, inside Telegram. Built in Bengaluru with obsessive care for speed, privacy, and clarity.</p>
+      <p class="footer-desc">The AI chief of staff for your life. Remembers everything, reminds you precisely, connects your world. Built in Bengaluru.</p>
     </div>
     <div>
       <div class="footer-heading">Product</div>
       <ul class="footer-links">
         <li><a href="#features">Features</a></li>
+        <li><a href="#usecases">Use cases</a></li>
+        <li><a href="#integrations">Integrations</a></li>
         <li><a href="#pricing">Pricing</a></li>
-        <li><a href="#compare">vs Memorae</a></li>
-        <li><a href="https://t.me/askgogo_bot">Try free</a></li>
       </ul>
     </div>
     <div>
@@ -1316,62 +1881,85 @@
       <ul class="footer-links">
         <li><a href="https://askgogo.in">GCC Consulting</a></li>
         <li><a href="https://linkedin.com/in/goverdhanmd">LinkedIn</a></li>
-        <li><a href="mailto:hello@askgogo.in">Contact</a></li>
+        <li><a href="mailto:hello@askgogo.in">hello@askgogo.in</a></li>
       </ul>
     </div>
     <div>
       <div class="footer-heading">Legal</div>
       <ul class="footer-links">
         <li><a href="#">Privacy Policy</a></li>
-        <li><a href="#">Terms</a></li>
-        <li><a href="#">Cookies</a></li>
+        <li><a href="#">Terms of Service</a></li>
+        <li><a href="#">Refund Policy</a></li>
       </ul>
     </div>
   </div>
   <div class="footer-bottom">
-    <span>© 2026 AskGogo · Built in Bengaluru 🇮🇳</span>
-    <span>Powered by Claude · Vercel · Supabase</span>
+    <span>© 2026 AskGogo · Built in Bengaluru 🇮🇳 with Claude AI</span>
+    <span>All systems operational</span>
   </div>
 </footer>
 
 <script>
-  // Scenarios
+  // THEME TOGGLE
+  const saved = localStorage.getItem('theme') || 'dark';
+  document.body.setAttribute('data-theme', saved);
+  document.getElementById('themeBtn').textContent = saved === 'dark' ? '🌙' : '☀️';
+  function toggleTheme() {
+    const current = document.body.getAttribute('data-theme');
+    const next = current === 'dark' ? 'light' : 'dark';
+    document.body.setAttribute('data-theme', next);
+    document.getElementById('themeBtn').textContent = next === 'dark' ? '🌙' : '☀️';
+    localStorage.setItem('theme', next);
+  }
+
+  // DEMO scenarios
   const scenarios = [
     [
-      { role: 'user', text: "Remember that Divya's birthday is May 15th", time: '2:14 PM' },
+      { role: 'user', text: "Remember Divya's birthday is February 6th and she loves white roses 🌹", time: '2:14 PM' },
       { typing: true },
-      { role: 'bot', text: "Got it! 🎂 I've saved <strong>Divya's birthday: May 15th</strong> to your memory. I'll remind you a few days before.", time: '2:14 PM' }
+      { role: 'bot', text: "Got it! 🎂 Saved <strong>two memories</strong>:<br>• Divya's birthday: February 6<br>• Divya loves white roses<br><br>I'll remind you 3 days before and suggest the best florist near you.", time: '2:14 PM' }
     ],
     [
       { role: 'user', text: "Remind me to drink water every 2 hours during work", time: '9:02 AM' },
       { typing: true },
-      { role: 'bot', text: "✅ Recurring reminder set: <strong>Drink water</strong>.<br>Every 2 hours, 9 AM – 6 PM IST on weekdays. 💧", time: '9:02 AM' }
+      { role: 'bot', text: "✅ Recurring reminder set: <strong>Drink water</strong>.<br>Every 2 hours · 9 AM – 6 PM IST · weekdays only 💧<br><br>Next ping: 11:00 AM.", time: '9:02 AM' }
     ],
     [
       { role: 'user', text: "🎤 Voice note (0:08)", time: '6:45 PM' },
       { typing: true },
-      { role: 'bot', text: "<em>Heard you:</em> \"Remind me to call Divya tomorrow at 9am and review the Q3 deck before\"<br><br>✅ Two reminders saved.", time: '6:45 PM' }
+      { role: 'bot', text: "<em>Heard:</em> \"Remind me to call Divya tomorrow at 9am and review the Q3 deck before\"<br><br>✅ <strong>Two actions done:</strong><br>• Reminder: Call Divya · tomorrow 9am<br>• Reminder: Review Q3 deck · tomorrow 8:45am", time: '6:45 PM' }
     ],
     [
-      { role: 'user', text: "What do you know about me so far?", time: '11:30 AM' },
+      { role: 'user', text: "Add anniversary dinner with Divya Feb 6th 7pm at The Leela", time: '11:30 AM' },
       { typing: true },
-      { role: 'bot', text: "Here's what I remember:<br>• You prefer <strong>meetings after 10am</strong><br>• <strong>Divya's birthday</strong> is May 15<br>• You drink <strong>black coffee</strong><br>• Your wife's name is <strong>Priya</strong><br><br>Want me to add anything?", time: '11:30 AM' }
+      { role: 'bot', text: "📅 <strong>Calendar event created:</strong><br>• Dinner with Divya ❤️<br>• Thu, Feb 6 · 7:00 – 9:00 PM<br>• The Leela, Bengaluru<br><br>Synced to your Google Calendar. I'll remind you 2 hours before.", time: '11:30 AM' }
+    ],
+    [
+      { role: 'user', text: "Add milk, bread and flowers for Divya to shopping list", time: '5:10 PM' },
+      { typing: true },
+      { role: 'bot', text: "🛒 <strong>Shopping list updated</strong> (5 items):<br>• Milk ✓<br>• Bread ✓<br>• Flowers for Divya 💐<br>• Coffee beans<br>• Olive oil<br><br>Say 'show list' anytime.", time: '5:10 PM' }
+    ],
+    [
+      { role: 'user', text: "Morning briefing please", time: '7:00 AM' },
+      { typing: true },
+      { role: 'bot', text: "☀️ <strong>Good morning, Gogo!</strong><br><br>Today, Friday Apr 18:<br>• 3 meetings (next: 10am standup)<br>• 5 reminders pending<br>• Shopping list: 5 items<br>• Bengaluru · 28°C · Clear<br><br>Have a productive day! 💪", time: '7:00 AM' }
+    ],
+    [
+      { role: 'user', text: "I'm feeling overwhelmed, help me breathe", time: '3:22 PM' },
+      { typing: true },
+      { role: 'bot', text: "🧘 <strong>Let's breathe together.</strong><br><br>Box breathing · 4-4-4-4:<br>→ Inhale 4s<br>→ Hold 4s<br>→ Exhale 4s<br>→ Hold 4s<br><br>3 cycles starting now. You've got this. 💚", time: '3:22 PM' }
     ]
   ];
 
-  function typeWriter(element, text, speed = 25) {
-    return new Promise(resolve => {
-      element.innerHTML = '';
-      let i = 0;
-      // skip animation, just set html
-      element.innerHTML = text;
-      resolve();
-    });
-  }
+  let currentIdx = 0;
+  let autoplayTimer = null;
+  let demoLocked = false;
 
-  async function playScenario(idx, btn) {
+  async function playScenario(idx) {
+    demoLocked = true;
+    currentIdx = idx;
     document.querySelectorAll('.demo-chip').forEach(c => c.classList.remove('active'));
-    btn.classList.add('active');
+    document.querySelector(`.demo-chip[data-idx="${idx}"]`).classList.add('active');
     const body = document.getElementById('demoBody');
     body.innerHTML = '';
     const scenario = scenarios[idx];
@@ -1383,7 +1971,7 @@
         el.className = 'typing';
         el.innerHTML = '<div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div>';
         body.appendChild(el);
-        await new Promise(r => setTimeout(r, 1000));
+        await new Promise(r => setTimeout(r, 1200));
         el.remove();
       } else {
         const el = document.createElement('div');
@@ -1392,14 +1980,65 @@
         body.appendChild(el);
       }
     }
+    demoLocked = false;
   }
 
-  // Start first scenario after page load
-  window.addEventListener('load', () => {
-    setTimeout(() => playScenario(0, document.querySelector('.demo-chip')), 300);
+  // Auto-advance
+  function startAutoplay() {
+    autoplayTimer = setInterval(() => {
+      if (!demoLocked) {
+        const next = (currentIdx + 1) % scenarios.length;
+        playScenario(next);
+      }
+    }, 8000);
+  }
+  function resetAutoplay() {
+    clearInterval(autoplayTimer);
+    startAutoplay();
+  }
+
+  document.querySelectorAll('.demo-chip').forEach(chip => {
+    chip.addEventListener('click', () => {
+      const idx = parseInt(chip.getAttribute('data-idx'));
+      playScenario(idx);
+      resetAutoplay();
+    });
   });
 
-  // Reveal on scroll
+  window.addEventListener('load', () => {
+    setTimeout(() => {
+      playScenario(0);
+      startAutoplay();
+    }, 500);
+  });
+
+  // PRICING TOGGLE
+  function togglePrice(type, btn) {
+    document.querySelectorAll('.toggle-opt').forEach(t => t.classList.remove('active'));
+    btn.classList.add('active');
+    if (type === 'annual') {
+      document.getElementById('p1').innerHTML = '₹89 <span class="cut">₹149</span>';
+      document.getElementById('p2').innerHTML = '₹166 <span class="cut" style="color: rgba(7,7,10,0.5);">₹299</span>';
+      document.getElementById('p3').innerHTML = '₹9,999';
+      document.getElementById('heroPlanSub').textContent = '12 months for ₹1,999 (save 40%)';
+    } else {
+      document.getElementById('p1').innerHTML = '₹149';
+      document.getElementById('p2').innerHTML = '₹299 <span class="cut" style="color: rgba(7,7,10,0.5);">₹499</span>';
+      document.getElementById('p3').innerHTML = '₹9,999';
+      document.getElementById('heroPlanSub').textContent = '7 days free · then ₹299/month';
+    }
+  }
+
+  function selectPlan(el, planName) {
+    document.querySelectorAll('.plan-mini-card').forEach(c => {
+      if (!c.classList.contains('plan-mini-popular')) c.classList.remove('selected');
+    });
+    el.classList.add('selected');
+    const names = { starter: 'Starter', pro: 'Pro', lifetime: 'Lifetime' };
+    document.getElementById('heroPlanName').textContent = names[planName];
+  }
+
+  // REVEAL
   const reveals = document.querySelectorAll('.reveal');
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
@@ -1413,7 +2052,7 @@
     if (!isOpen) el.classList.add('open');
   }
 
-  // Smooth scroll
+  // SMOOTH SCROLL
   document.querySelectorAll('a[href^="#"]').forEach(a => {
     a.addEventListener('click', e => {
       const href = a.getAttribute('href');
