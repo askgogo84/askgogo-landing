@@ -7,6 +7,7 @@
 <meta name="description" content="AskGogo remembers everything, reminds you at the right time, and thinks with you — all inside Telegram. Smarter than any app you've used.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/vendor/lenis/lenis.css">
 <style>
   :root {
     --ink: #0a0a0f;
@@ -23,6 +24,10 @@
   }
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   html { scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}
+}
   body {
     font-family: var(--sans);
     background: var(--paper);
@@ -1088,11 +1093,17 @@
   // Smooth nav links
   document.querySelectorAll('a[href^="#"]').forEach(a => {
     a.addEventListener('click', e => {
-      e.preventDefault();
+      // Lenis's `anchors` option already handles anchor clicks (with the header
+      // offset applied). Running this handler too would scroll twice.
+      if (window.__lenis) return;
       const target = document.querySelector(a.getAttribute('href'));
-      if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      if (!target) return;
+      e.preventDefault();
+      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
     });
   });
 </script>
+<script src="/vendor/lenis/lenis.min.js" defer></script>
+<script src="/vendor/lenis/smooth-scroll.js" defer></script>
 </body>
 </html>
